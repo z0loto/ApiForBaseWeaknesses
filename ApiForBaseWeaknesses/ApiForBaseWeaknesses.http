@@ -1,0 +1,6 @@
+@ApiForBaseWeaknesses = http://localhost:5164
+
+GET {{ApiForBaseWeaknesses}}/weatherforecast/
+Accept: application/json
+
+###
