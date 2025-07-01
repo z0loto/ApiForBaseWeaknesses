@@ -1,4 +1,6 @@
 using ApiForBaseWeaknesses;
+using ApiForBaseWeaknesses.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
 
@@ -7,7 +9,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
-builder.Services.AddHttpClient<WeatherForecast>();
+builder.Services.AddHttpClient<Vulnerability>();
+
+// В Program.cs или Startup.cs
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 //swagger
 builder.Services.AddEndpointsApiExplorer();
