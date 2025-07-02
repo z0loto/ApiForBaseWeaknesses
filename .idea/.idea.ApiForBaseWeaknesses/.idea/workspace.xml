@@ -9,14 +9,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2b181e67-32fa-4902-a002-e2da979bb73c" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/ApiForBaseWeaknesses/Dto/MainDto.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ApiForBaseWeaknesses/Import/nvdcve-2.0-recent.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ApiForBaseWeaknesses/Mapping/Mapping.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ApiForBaseWeaknesses/Services/BaseService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ApiForBaseWeaknesses/ApiForBaseWeaknesses.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/ApiForBaseWeaknesses/ApiForBaseWeaknesses.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ApiForBaseWeaknesses/Controllers/WeatherForecastController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ApiForBaseWeaknesses/Controllers/MainController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ApiForBaseWeaknesses/Dto/CveDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ApiForBaseWeaknesses/Dto/CveDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ApiForBaseWeaknesses/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ApiForBaseWeaknesses/Program.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ApiForBaseWeaknesses/OutputFinal.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ApiForBaseWeaknesses/AppDbContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ApiForBaseWeaknesses/AppDbContext.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ApiForBaseWeaknesses/Dto/cvssDataDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ApiForBaseWeaknesses/Dto/cvssDataDto.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ApiForBaseWeaknesses/Mapping/Mapping.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ApiForBaseWeaknesses/Mapping/Mapping.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ApiForBaseWeaknesses/Migrations/20250701104537_InitialCreate.Designer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ApiForBaseWeaknesses/Migrations/20250702131538_DataBaseForVulnerability.Designer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ApiForBaseWeaknesses/Migrations/20250701104537_InitialCreate.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ApiForBaseWeaknesses/Migrations/20250702131538_DataBaseForVulnerability.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ApiForBaseWeaknesses/Migrations/20250701111017_InitialCreatee.Designer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ApiForBaseWeaknesses/Migrations/20250701111017_InitialCreatee.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ApiForBaseWeaknesses/Migrations/AppDbContextModelSnapshot.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ApiForBaseWeaknesses/Models/CvssMetric.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ApiForBaseWeaknesses/Models/CvssMetric.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ApiForBaseWeaknesses/Models/Vulnerability.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ApiForBaseWeaknesses/Models/Vulnerability.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ApiForBaseWeaknesses/Services/BaseService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ApiForBaseWeaknesses/Services/BaseService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ApiForBaseWeaknesses/output.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ApiForBaseWeaknesses/output.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -95,6 +100,7 @@
       <workItem from="1751303808839" duration="6390000" />
       <workItem from="1751363051065" duration="5819000" />
       <workItem from="1751369552941" duration="5354000" />
+      <workItem from="1751444117968" duration="19658000" />
     </task>
     <servers />
   </component>
