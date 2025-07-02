@@ -14,7 +14,7 @@ namespace ApiForBaseWeaknesses.Models
         [Column("Vector_String")]
         public string VectorString { get; set; } = string.Empty;
         [Column("Base_Score")]
-        public double BaseScore { get; set; }
+        public double? BaseScore { get; set; }
         [Column("Vulnerability_Id")]
         public int VulnerabilityId { get; set; }
         public virtual Vulnerability Vulnerability { get; set; } = null!;

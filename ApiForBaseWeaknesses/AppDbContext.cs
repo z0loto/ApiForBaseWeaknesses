@@ -9,5 +9,5 @@ public class AppDbContext:DbContext
         : base(options) { }
     public DbSet<Vulnerability> Vulnerability { get; set; }
     public DbSet<References> References { get; set; }
-    public DbSet<CvssMetric> CvssMetrics { get; set; }
+    public DbSet<CvssMetric> Cvss_Metrics { get; set; }
 }
