@@ -1,7 +1,9 @@
-﻿namespace ApiForBaseWeaknesses.Dto
+﻿using System.Text.Json.Serialization;
+
+namespace ApiForBaseWeaknesses.Dto
 {
     public class VulnerabilitiesDto
     {
-        public List<CveDto> Cve = new List<CveDto>();
+        public CveDto Cve { get; set; } = new();
     }
 }

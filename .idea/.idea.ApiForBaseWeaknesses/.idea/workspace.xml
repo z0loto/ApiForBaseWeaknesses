@@ -9,17 +9,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2b181e67-32fa-4902-a002-e2da979bb73c" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/ApiForBaseWeaknesses/AppDbContext.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ApiForBaseWeaknesses/Dto/CveDto.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ApiForBaseWeaknesses/Dto/CvssMetricDto.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ApiForBaseWeaknesses/Dto/DescriptionsDto.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ApiForBaseWeaknesses/Dto/MetricsDto.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ApiForBaseWeaknesses/Dto/ReferencesDto.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ApiForBaseWeaknesses/Dto/MainDto.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ApiForBaseWeaknesses/Import/nvdcve-2.0-recent.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ApiForBaseWeaknesses/Mapping/Mapping.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ApiForBaseWeaknesses/Services/BaseService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ApiForBaseWeaknesses/ApiForBaseWeaknesses.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/ApiForBaseWeaknesses/ApiForBaseWeaknesses.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ApiForBaseWeaknesses/Controllers/WeatherForecastController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ApiForBaseWeaknesses/Controllers/WeatherForecastController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ApiForBaseWeaknesses/Models/WeatherForecast.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ApiForBaseWeaknesses/Controllers/WeatherForecastController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ApiForBaseWeaknesses/Controllers/MainController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ApiForBaseWeaknesses/Dto/CveDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ApiForBaseWeaknesses/Dto/CveDto.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ApiForBaseWeaknesses/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ApiForBaseWeaknesses/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ApiForBaseWeaknesses/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/ApiForBaseWeaknesses/appsettings.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,21 +38,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    ".NET Launch Settings Profile.ApiForBaseWeaknesses: http.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "master",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;.NET Launch Settings Profile.ApiForBaseWeaknesses: http.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected=".NET Launch Settings Profile.ApiForBaseWeaknesses: http">
     <configuration name="ApiForBaseWeaknesses: http" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
       <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/ApiForBaseWeaknesses/ApiForBaseWeaknesses.csproj" />
@@ -97,6 +94,7 @@
       <updated>1751303804350</updated>
       <workItem from="1751303808839" duration="6390000" />
       <workItem from="1751363051065" duration="5819000" />
+      <workItem from="1751369552941" duration="5354000" />
     </task>
     <servers />
   </component>
@@ -104,6 +102,17 @@
     <option name="version" value="3" />
   </component>
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
   </component>
