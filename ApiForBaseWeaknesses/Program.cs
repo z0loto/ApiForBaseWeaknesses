@@ -13,7 +13,7 @@ builder.Services.AddControllers();
 builder.Services.AddScoped<BaseService>();
 builder.Services.AddHttpClient<Vulnerability>();
 
-// В Program.cs или Startup.cs
+// В Program.cs
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 

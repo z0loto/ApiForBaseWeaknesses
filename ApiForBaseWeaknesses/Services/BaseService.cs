@@ -1,7 +1,6 @@
 using System.Text.Json;
 using ApiForBaseWeaknesses.Dto;
 using ApiForBaseWeaknesses.Models;
-using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace ApiForBaseWeaknesses.Services;
@@ -23,10 +22,7 @@ public class BaseService
             PropertyNameCaseInsensitive = true
         };
         MainDto response = JsonSerializer.Deserialize<MainDto>(json, options);
-        //Console.WriteLine("DTO загружен: " + (response != null));
-        //Console.WriteLine(response.Vulnerabilities.Count);
-        File.WriteAllText("output.txt", JsonSerializer.Serialize(response, new JsonSerializerOptions { WriteIndented = true }));
-
+        File.WriteAllText("outputDto.txt", JsonSerializer.Serialize(response, new JsonSerializerOptions { WriteIndented = true }));
         FillModels(response);
         return true;
     }
@@ -36,15 +32,13 @@ public class BaseService
         if (response != null)
         {
             List<Vulnerability> Finalmodel = Mapping.Mapping.MapToListVulnerability(response);
-            // Настройка сериализации (чтобы удобно читать)  тест
+            // Настройка сериализации для понятного вывода
             var jsonOptions = new JsonSerializerOptions
             {
-                WriteIndented = true, // форматированный (красивый) JSON
-                ReferenceHandler = ReferenceHandler.IgnoreCycles // если есть ссылки между объектами
+                WriteIndented = true, 
+                ReferenceHandler = ReferenceHandler.IgnoreCycles 
             };
-            //тест
-            
-            File.WriteAllText("OutputFinal.txt", JsonSerializer.Serialize(Finalmodel, jsonOptions));
+            File.WriteAllText("OutputFinalModels.txt", JsonSerializer.Serialize(Finalmodel, jsonOptions));
             Console.WriteLine("OutputFinal выведен. Переход к FinalFill");
             FinalFill(Finalmodel);
             
