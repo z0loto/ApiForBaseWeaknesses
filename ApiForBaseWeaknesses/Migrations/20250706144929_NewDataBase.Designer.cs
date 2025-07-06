@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ApiForBaseWeaknesses.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250706111316_DataBaseVulnerability")]
-    partial class DataBaseVulnerability
+    [Migration("20250706144929_NewDataBase")]
+    partial class NewDataBase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -29,6 +29,7 @@ namespace ApiForBaseWeaknesses.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasMaxLength(3)
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
@@ -44,8 +45,7 @@ namespace ApiForBaseWeaknesses.Migrations
 
                     b.Property<string>("Version")
                         .IsRequired()
-                        .HasMaxLength(3)
-                        .HasColumnType("character varying(3)");
+                        .HasColumnType("text");
 
                     b.Property<int>("VulnerabilityId")
                         .HasColumnType("integer")
@@ -55,7 +55,7 @@ namespace ApiForBaseWeaknesses.Migrations
 
                     b.HasIndex("VulnerabilityId");
 
-                    b.ToTable("Cvss_Metrics");
+                    b.ToTable("Cvss_Metrics", (string)null);
                 });
 
             modelBuilder.Entity("ApiForBaseWeaknesses.Models.Reference", b =>
@@ -110,7 +110,7 @@ namespace ApiForBaseWeaknesses.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Vulnerabilitys");
+                    b.ToTable("Vulnerabilities");
                 });
 
             modelBuilder.Entity("ApiForBaseWeaknesses.Models.CvssMetric", b =>

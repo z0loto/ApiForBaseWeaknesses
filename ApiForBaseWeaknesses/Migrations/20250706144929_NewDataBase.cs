@@ -7,13 +7,13 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ApiForBaseWeaknesses.Migrations
 {
     /// <inheritdoc />
-    public partial class DataBaseVulnerability : Migration
+    public partial class NewDataBase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Vulnerabilitys",
+                name: "Vulnerabilities",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -25,16 +25,16 @@ namespace ApiForBaseWeaknesses.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Vulnerabilitys", x => x.Id);
+                    table.PrimaryKey("PK_Vulnerabilities", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Cvss_Metrics",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
+                    Id = table.Column<int>(type: "integer", maxLength: 3, nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Version = table.Column<string>(type: "character varying(3)", maxLength: 3, nullable: false),
+                    Version = table.Column<string>(type: "text", nullable: false),
                     Vector_String = table.Column<string>(type: "text", nullable: false),
                     Base_Score = table.Column<double>(type: "double precision", nullable: true),
                     Vulnerability_Id = table.Column<int>(type: "integer", nullable: false)
@@ -43,9 +43,9 @@ namespace ApiForBaseWeaknesses.Migrations
                 {
                     table.PrimaryKey("PK_Cvss_Metrics", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Cvss_Metrics_Vulnerabilitys_Vulnerability_Id",
+                        name: "FK_Cvss_Metrics_Vulnerabilities_Vulnerability_Id",
                         column: x => x.Vulnerability_Id,
-                        principalTable: "Vulnerabilitys",
+                        principalTable: "Vulnerabilities",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -64,9 +64,9 @@ namespace ApiForBaseWeaknesses.Migrations
                 {
                     table.PrimaryKey("PK_References", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_References_Vulnerabilitys_Vulnerability_Id",
+                        name: "FK_References_Vulnerabilities_Vulnerability_Id",
                         column: x => x.Vulnerability_Id,
-                        principalTable: "Vulnerabilitys",
+                        principalTable: "Vulnerabilities",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -92,7 +92,7 @@ namespace ApiForBaseWeaknesses.Migrations
                 name: "References");
 
             migrationBuilder.DropTable(
-                name: "Vulnerabilitys");
+                name: "Vulnerabilities");
         }
     }
 }
