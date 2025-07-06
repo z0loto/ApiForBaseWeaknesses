@@ -18,5 +18,6 @@ namespace ApiForBaseWeaknesses.Models
         [Column("Vulnerability_Id")]
         public int VulnerabilityId { get; set; }
         public virtual Vulnerability Vulnerability { get; set; } = null!;
+        //null! можно не использовать
     }
 }

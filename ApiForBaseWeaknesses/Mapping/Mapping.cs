@@ -12,35 +12,35 @@ public class Mapping
             .Select(v => MapToVulnerability(v.Cve))
             .ToList();
     }
-    public static Vulnerability MapToVulnerability(CveDto dto)
+    private static Vulnerability MapToVulnerability(CveDto dto)
     {
         if (dto == null) return null;
     
         return new Vulnerability
         {
             Name = dto.Id,
-            Published = dto.Published,
+            Published = DateTime.SpecifyKind(dto.Published,DateTimeKind.Utc), // Изменено
             Status = dto.VulnStatus,
             Description = dto.Descriptions?.FirstOrDefault(d=>d.Lang=="en")?.Value ?? "No description",
-            CvssMetric =MapToCvssMetric(dto.Metrics),
-            Reference = dto.References?.Select(r=>new References
+            CvssMetrics =MapToCvssMetric(dto.Metrics),
+            References = dto.References?.Select(r=>new Reference
             {
                 Url=r.Url,
                 Source=r.Source
             }).ToList() ?? new()
         };
     }
-    
-    public static List<CvssMetric> MapToCvssMetric(MetricsDto dto)
+
+    private static List<CvssMetric> MapToCvssMetric(MetricsDto dto)
     {
         if (dto == null) return null;
         List<CvssMetric> result = new();
-        void Add(List<CvssMetricDto> list)
+        void Add(ICollection<CvssMetricDto> list)
         {
             if (list.Count==0)
             {
                 return; 
-            } 
+            }
             foreach(var cvss in list)
             {
                 result.Add(new CvssMetric
@@ -50,15 +50,11 @@ public class Mapping
                     BaseScore = cvss.CvssData?.BaseScore
                 }); 
             }
-          
-
         }
         Add(dto.CvssMetricV2);
         Add(dto.CvssMetricV30);
         Add(dto.CvssMetricV31);
         Add(dto.CvssMetricV40);
-
-
         return result;
     }
 }

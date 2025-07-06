@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ApiForBaseWeaknesses.Models
 {
-    public class References
+    public class Reference
     {
         [Key]
         public int Id { get; set; }
