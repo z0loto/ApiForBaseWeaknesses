@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ApiForBaseWeaknesses.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250706144929_NewDataBase")]
-    partial class NewDataBase
+    [Migration("20250706154043_DataBaseVulnerabilities")]
+    partial class DataBaseVulnerabilities
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
