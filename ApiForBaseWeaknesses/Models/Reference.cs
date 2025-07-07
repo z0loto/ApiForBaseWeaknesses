@@ -10,6 +10,6 @@ namespace ApiForBaseWeaknesses.Models
         public string Url { get; set; }=string.Empty;
         public string Source { get; set; } = string.Empty;
         public int VulnerabilityId { get; set; }
-        public virtual Vulnerability Vulnerability { get; set; } = null!;
+        public virtual Vulnerability Vulnerability { get; set; }
     }
 }

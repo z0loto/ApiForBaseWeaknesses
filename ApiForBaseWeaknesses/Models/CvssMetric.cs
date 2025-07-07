@@ -10,7 +10,6 @@ namespace ApiForBaseWeaknesses.Models
         public string VectorString { get; set; } = string.Empty;
         public double? BaseScore { get; set; }
         public int VulnerabilityId { get; set; }
-        public virtual Vulnerability Vulnerability { get; set; } = null!;
-        //null! можно не использовать
+        public virtual Vulnerability Vulnerability { get; set; }
     }
 }

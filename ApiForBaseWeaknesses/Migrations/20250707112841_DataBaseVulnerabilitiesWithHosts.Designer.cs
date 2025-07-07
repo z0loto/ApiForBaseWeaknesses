@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ApiForBaseWeaknesses.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250706154043_DataBaseVulnerabilities")]
-    partial class DataBaseVulnerabilities
+    [Migration("20250707112841_DataBaseVulnerabilitiesWithHosts")]
+    partial class DataBaseVulnerabilitiesWithHosts
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -29,7 +29,6 @@ namespace ApiForBaseWeaknesses.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasMaxLength(3)
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
@@ -45,7 +44,9 @@ namespace ApiForBaseWeaknesses.Migrations
 
                     b.Property<string>("Version")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(3)
+                        .HasColumnType("character varying(3)")
+                        .HasColumnName("Version");
 
                     b.Property<int>("VulnerabilityId")
                         .HasColumnType("integer")
@@ -58,6 +59,27 @@ namespace ApiForBaseWeaknesses.Migrations
                     b.ToTable("Cvss_Metrics", (string)null);
                 });
 
+            modelBuilder.Entity("ApiForBaseWeaknesses.Models.NetworkHost", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Ip")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("Ip");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Ip")
+                        .IsUnique();
+
+                    b.ToTable("Host");
+                });
+
             modelBuilder.Entity("ApiForBaseWeaknesses.Models.Reference", b =>
                 {
                     b.Property<int>("Id")
@@ -68,11 +90,13 @@ namespace ApiForBaseWeaknesses.Migrations
 
                     b.Property<string>("Source")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("Source");
 
                     b.Property<string>("Url")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("Url");
 
                     b.Property<int>("VulnerabilityId")
                         .HasColumnType("integer")
@@ -95,18 +119,22 @@ namespace ApiForBaseWeaknesses.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("Description");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("Name");
 
                     b.Property<DateTime>("Published")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("Published");
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("Status");
 
                     b.HasKey("Id");
 

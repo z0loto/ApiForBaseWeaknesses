@@ -1,3 +1,4 @@
+using System.Net;
 using ApiForBaseWeaknesses.Models;
 using ApiForBaseWeaknesses.Dto;
 
@@ -30,7 +31,6 @@ public class Mapping
             }).ToList() ?? new()
         };
     }
-
     private static List<CvssMetric> MapToCvssMetric(MetricsDto dto)
     {
         if (dto == null) return null;
@@ -56,5 +56,12 @@ public class Mapping
         Add(dto.CvssMetricV31);
         Add(dto.CvssMetricV40);
         return result;
+    }
+    public static List<NetworkHost> MapToNetworkHost(List<string> list)
+    {
+        return list.Where(l => l != null && IPAddress.TryParse(l.Trim(), out _)).Select(l => new NetworkHost
+        {
+            Ip = l
+        }).ToList();
     }
 }
