@@ -1,6 +1,5 @@
 using ApiForBaseWeaknesses.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace ApiForBaseWeaknesses.Controllers;
 [ApiController]
@@ -37,11 +36,10 @@ public class ImportHostsController:ControllerBase
           }
         }
       }
-      //List<NetworkHost> result = Mapping.Mapping.MapToNetworkHost(hosts);
-      _logger.LogInformation("Пауза");
-      //_context.Host.AddRange(result);
+      List<NetworkHost> result = Mapping.Mapping.MapToNetworkHost(hosts);
+      _context.Host.AddRange(result);
       _context.SaveChanges();
-      return Ok(hosts);
+      return Ok();
     }
     catch (NullReferenceException ex)
     {
