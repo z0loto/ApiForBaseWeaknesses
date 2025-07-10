@@ -6,13 +6,13 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ApiForBaseWeaknesses.Migrations
 {
     /// <inheritdoc />
-    public partial class DataBaseVulnerabilitiesWithHosts : Migration
+    public partial class AddHosts : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Host",
+                name: "Hosts",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -21,12 +21,12 @@ namespace ApiForBaseWeaknesses.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Host", x => x.Id);
+                    table.PrimaryKey("PK_Hosts", x => x.Id);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Host_Ip",
-                table: "Host",
+                name: "IX_Hosts_Ip",
+                table: "Hosts",
                 column: "Ip",
                 unique: true);
         }
@@ -35,7 +35,7 @@ namespace ApiForBaseWeaknesses.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Host");
+                name: "Hosts");
         }
     }
 }

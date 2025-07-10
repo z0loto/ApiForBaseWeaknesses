@@ -34,10 +34,10 @@ namespace ApiForBaseWeaknesses.Migrations
                         .HasColumnType("double precision")
                         .HasColumnName("Base_Score");
 
-                    b.Property<string>("VectorString")
+                    b.Property<string>("Vector")
                         .IsRequired()
                         .HasColumnType("text")
-                        .HasColumnName("Vector_String");
+                        .HasColumnName("Vector");
 
                     b.Property<string>("Version")
                         .IsRequired()
@@ -56,7 +56,7 @@ namespace ApiForBaseWeaknesses.Migrations
                     b.ToTable("Cvss_Metrics", (string)null);
                 });
 
-            modelBuilder.Entity("ApiForBaseWeaknesses.Models.NetworkHost", b =>
+            modelBuilder.Entity("ApiForBaseWeaknesses.Models.Host", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -74,7 +74,7 @@ namespace ApiForBaseWeaknesses.Migrations
                     b.HasIndex("Ip")
                         .IsUnique();
 
-                    b.ToTable("Host");
+                    b.ToTable("Hosts");
                 });
 
             modelBuilder.Entity("ApiForBaseWeaknesses.Models.Reference", b =>

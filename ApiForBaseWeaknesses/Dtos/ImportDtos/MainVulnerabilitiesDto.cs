@@ -1,6 +1,6 @@
 namespace ApiForBaseWeaknesses.Dto;
 
-public class MainDto
+public class MainVulnerabilitiesDto
 {
     public ICollection<VulnerabilitiesDto> Vulnerabilities { get; set; } = new List<VulnerabilitiesDto>();
 }

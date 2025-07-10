@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ApiForBaseWeaknesses.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250707112841_DataBaseVulnerabilitiesWithHosts")]
-    partial class DataBaseVulnerabilitiesWithHosts
+    [Migration("20250710113307_DataBaseVulnerabilities")]
+    partial class DataBaseVulnerabilities
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -37,10 +37,10 @@ namespace ApiForBaseWeaknesses.Migrations
                         .HasColumnType("double precision")
                         .HasColumnName("Base_Score");
 
-                    b.Property<string>("VectorString")
+                    b.Property<string>("Vector")
                         .IsRequired()
                         .HasColumnType("text")
-                        .HasColumnName("Vector_String");
+                        .HasColumnName("Vector");
 
                     b.Property<string>("Version")
                         .IsRequired()
@@ -57,27 +57,6 @@ namespace ApiForBaseWeaknesses.Migrations
                     b.HasIndex("VulnerabilityId");
 
                     b.ToTable("Cvss_Metrics", (string)null);
-                });
-
-            modelBuilder.Entity("ApiForBaseWeaknesses.Models.NetworkHost", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Ip")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("Ip");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Ip")
-                        .IsUnique();
-
-                    b.ToTable("Host");
                 });
 
             modelBuilder.Entity("ApiForBaseWeaknesses.Models.Reference", b =>

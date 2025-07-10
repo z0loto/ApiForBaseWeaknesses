@@ -1,8 +1,3 @@
-
-using ApiForBaseWeaknesses.Dto;
-using ApiForBaseWeaknesses.Models;
-using System.Text.Json.Serialization;
-
 namespace ApiForBaseWeaknesses.Services;
 
 public class BaseService

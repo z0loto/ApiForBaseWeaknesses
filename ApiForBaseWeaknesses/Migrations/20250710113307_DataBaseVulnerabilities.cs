@@ -35,7 +35,7 @@ namespace ApiForBaseWeaknesses.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Version = table.Column<string>(type: "character varying(3)", maxLength: 3, nullable: false),
-                    Vector_String = table.Column<string>(type: "text", nullable: false),
+                    Vector = table.Column<string>(type: "text", nullable: false),
                     Base_Score = table.Column<double>(type: "double precision", nullable: true),
                     Vulnerability_Id = table.Column<int>(type: "integer", nullable: false)
                 },
