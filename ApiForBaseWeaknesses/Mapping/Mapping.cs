@@ -64,7 +64,7 @@ public class Mapping
         return result;
     }
 
-    public static List<Host> MapToNetworkHost(List<string> list)
+    public static List<Host> MapToHost(List<string> list)
     {
         return list.Where(l => l != null && IPAddress.TryParse(l.Trim(), out _)).Select(l => new Host
         {

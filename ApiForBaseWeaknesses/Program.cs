@@ -10,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
-builder.Services.AddScoped<BaseService>();
+builder.Services.AddScoped<Service>();
 builder.Services.AddHttpClient<Vulnerability>();
 
 // В Program.cs

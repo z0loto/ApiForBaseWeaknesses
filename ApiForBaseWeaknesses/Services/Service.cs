@@ -1,10 +1,10 @@
 namespace ApiForBaseWeaknesses.Services;
 
-public class BaseService
+public class Service
 {
     private readonly AppDbContext _context;
 
-    public BaseService(AppDbContext context)
+    public Service(AppDbContext context)
     {
         _context = context;
     }

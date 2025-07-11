@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ApiForBaseWeaknesses.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250710113943_AddHosts")]
-    partial class AddHosts
+    [Migration("20250711145042_AddDataBaseVulnerabilities")]
+    partial class AddDataBaseVulnerabilities
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -29,116 +29,170 @@ namespace ApiForBaseWeaknesses.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<double?>("BaseScore")
                         .HasColumnType("double precision")
-                        .HasColumnName("Base_Score");
+                        .HasColumnName("base_score");
 
                     b.Property<string>("Vector")
                         .IsRequired()
                         .HasColumnType("text")
-                        .HasColumnName("Vector");
+                        .HasColumnName("vector");
 
                     b.Property<string>("Version")
                         .IsRequired()
                         .HasMaxLength(3)
                         .HasColumnType("character varying(3)")
-                        .HasColumnName("Version");
+                        .HasColumnName("version");
 
                     b.Property<int>("VulnerabilityId")
                         .HasColumnType("integer")
-                        .HasColumnName("Vulnerability_Id");
+                        .HasColumnName("vulnerability_id");
 
                     b.HasKey("Id");
 
                     b.HasIndex("VulnerabilityId");
 
-                    b.ToTable("Cvss_Metrics", (string)null);
+                    b.ToTable("cvss_metrics", (string)null);
                 });
 
             modelBuilder.Entity("ApiForBaseWeaknesses.Models.Host", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("description");
 
                     b.Property<string>("Ip")
                         .IsRequired()
                         .HasColumnType("text")
-                        .HasColumnName("Ip");
+                        .HasColumnName("ip");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Ip")
                         .IsUnique();
 
-                    b.ToTable("Hosts");
+                    b.ToTable("hosts", (string)null);
                 });
 
             modelBuilder.Entity("ApiForBaseWeaknesses.Models.Reference", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Source")
                         .IsRequired()
                         .HasColumnType("text")
-                        .HasColumnName("Source");
+                        .HasColumnName("source");
 
                     b.Property<string>("Url")
                         .IsRequired()
                         .HasColumnType("text")
-                        .HasColumnName("Url");
+                        .HasColumnName("url");
 
                     b.Property<int>("VulnerabilityId")
                         .HasColumnType("integer")
-                        .HasColumnName("Vulnerability_Id");
+                        .HasColumnName("vulnerability_id");
 
                     b.HasKey("Id");
 
                     b.HasIndex("VulnerabilityId");
 
-                    b.ToTable("References");
+                    b.ToTable("references", (string)null);
+                });
+
+            modelBuilder.Entity("ApiForBaseWeaknesses.Models.Scan", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("HostId")
+                        .HasColumnType("integer")
+                        .HasColumnName("host_id");
+
+                    b.Property<DateTime>("ScannedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("scanned_at");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HostId");
+
+                    b.ToTable("scans", (string)null);
+                });
+
+            modelBuilder.Entity("ApiForBaseWeaknesses.Models.ScanVulnerability", b =>
+                {
+                    b.Property<int>("ScanId")
+                        .HasColumnType("integer")
+                        .HasColumnName("scan_id");
+
+                    b.Property<int>("VulnerabilityId")
+                        .HasColumnType("integer")
+                        .HasColumnName("vulnerability_id");
+
+                    b.HasKey("ScanId", "VulnerabilityId");
+
+                    b.HasIndex("VulnerabilityId");
+
+                    b.ToTable("scan_vulnerability", (string)null);
                 });
 
             modelBuilder.Entity("ApiForBaseWeaknesses.Models.Vulnerability", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("text")
-                        .HasColumnName("Description");
+                        .HasColumnName("description");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text")
-                        .HasColumnName("Name");
+                        .HasColumnName("name");
 
                     b.Property<DateTime>("Published")
                         .HasColumnType("timestamp with time zone")
-                        .HasColumnName("Published");
+                        .HasColumnName("published");
 
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("text")
-                        .HasColumnName("Status");
+                        .HasColumnName("status");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Vulnerabilities");
+                    b.ToTable("vulnerabilities", (string)null);
                 });
 
             modelBuilder.Entity("ApiForBaseWeaknesses.Models.CvssMetric", b =>
@@ -161,6 +215,46 @@ namespace ApiForBaseWeaknesses.Migrations
                         .IsRequired();
 
                     b.Navigation("Vulnerability");
+                });
+
+            modelBuilder.Entity("ApiForBaseWeaknesses.Models.Scan", b =>
+                {
+                    b.HasOne("ApiForBaseWeaknesses.Models.Host", "Host")
+                        .WithMany("Scans")
+                        .HasForeignKey("HostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Host");
+                });
+
+            modelBuilder.Entity("ApiForBaseWeaknesses.Models.ScanVulnerability", b =>
+                {
+                    b.HasOne("ApiForBaseWeaknesses.Models.Scan", "Scan")
+                        .WithMany("ScanVulnerability")
+                        .HasForeignKey("ScanId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ApiForBaseWeaknesses.Models.Vulnerability", "Vulnerability")
+                        .WithMany()
+                        .HasForeignKey("VulnerabilityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Scan");
+
+                    b.Navigation("Vulnerability");
+                });
+
+            modelBuilder.Entity("ApiForBaseWeaknesses.Models.Host", b =>
+                {
+                    b.Navigation("Scans");
+                });
+
+            modelBuilder.Entity("ApiForBaseWeaknesses.Models.Scan", b =>
+                {
+                    b.Navigation("ScanVulnerability");
                 });
 
             modelBuilder.Entity("ApiForBaseWeaknesses.Models.Vulnerability", b =>

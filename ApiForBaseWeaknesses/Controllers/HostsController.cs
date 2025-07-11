@@ -17,7 +17,7 @@ public class HostsController : ControllerBase
     }
 
     [HttpPost("import")]
-    public async Task<ActionResult> ImportHosts(IFormFile? file)
+    public async Task<ActionResult> Import(IFormFile? file)
     {
         try
         {
@@ -40,10 +40,10 @@ public class HostsController : ControllerBase
                 }
             }
 
-            List<Host> result = Mapping.Mapping.MapToNetworkHost(hosts);
-            _context.Hosts.AddRange(result);
-            _context.SaveChanges();
-            return Ok();
+            List<Host> result = Mapping.Mapping.MapToHost(hosts);
+            await _context.Hosts.AddRangeAsync(result);
+            await _context.SaveChangesAsync();
+            return Ok(result.Count());
         }
         catch (Exception ex)
         {

@@ -7,12 +7,12 @@ namespace ApiForBaseWeaknesses.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class VulnerabilityController : ControllerBase
+    public class VulnerabilitiesController : ControllerBase
     {
-        private readonly ILogger<VulnerabilityController> _logger;
+        private readonly ILogger<VulnerabilitiesController> _logger;
         private readonly AppDbContext _context;
 
-        public VulnerabilityController(ILogger<VulnerabilityController> logger,
+        public VulnerabilitiesController(ILogger<VulnerabilitiesController> logger,
             AppDbContext context)
         {
             _logger = logger;
@@ -20,7 +20,7 @@ namespace ApiForBaseWeaknesses.Controllers
         }
 
         [HttpPost("import")]
-        public async Task<IActionResult> ImportVulnerabilities(IFormFile? file)
+        public async Task<IActionResult> Import(IFormFile? file)
         {
             try
             {
@@ -45,11 +45,12 @@ namespace ApiForBaseWeaknesses.Controllers
                 if (mainVulnerabilitiesDto != null)
                 {
                     List<Vulnerability> finalmodel = Mapping.Mapping.MapToListVulnerability(mainVulnerabilitiesDto);
-                    _context.Vulnerabilities.AddRange(finalmodel);
-                    _context.SaveChanges();
+                    await _context.Vulnerabilities.AddRangeAsync(finalmodel);
+                    await _context.SaveChangesAsync();
+                    return Ok(finalmodel.Count());
                 }
 
-                return Ok("Успех");
+                return BadRequest();
             }
             catch (Exception ex)
             {
