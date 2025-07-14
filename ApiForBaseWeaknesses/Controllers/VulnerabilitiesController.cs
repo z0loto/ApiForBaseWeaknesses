@@ -47,7 +47,7 @@ namespace ApiForBaseWeaknesses.Controllers
                     List<Vulnerability> finalmodel = Mapping.Mapping.MapToListVulnerability(mainVulnerabilitiesDto);
                     await _context.Vulnerabilities.AddRangeAsync(finalmodel);
                     await _context.SaveChangesAsync();
-                    return Ok(finalmodel.Count());
+                    return Ok($"Добавлено уязвимостей: {finalmodel.Count()}");
                 }
 
                 return BadRequest();

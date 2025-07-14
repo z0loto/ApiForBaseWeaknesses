@@ -15,6 +15,8 @@ public class AppDbContext : DbContext
     public DbSet<Reference> References { get; set; }
     public DbSet<CvssMetric> CvssMetrics { get; set; }
     public DbSet<Host> Hosts { get; set; }
+    public DbSet<Scan> Scans { get; set; }
+    public DbSet<ScanVulnerability> ScanVulnerabilities { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -67,5 +69,7 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<ScanVulnerability>().Property(sv => sv.ScanId).HasColumnName("scan_id");
         modelBuilder.Entity<ScanVulnerability>().Property(sv => sv.VulnerabilityId).HasColumnName("vulnerability_id");
         modelBuilder.Entity<ScanVulnerability>().ToTable("scan_vulnerability");
+        modelBuilder.Entity<ScanVulnerability>().HasOne(sv => sv.Scan).WithMany(s => s.ScanVulnerability)
+            .HasForeignKey(sv => sv.ScanId);
     }
 }

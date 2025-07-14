@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ApiForBaseWeaknesses.Migrations
 {
     /// <inheritdoc />
-    public partial class AddDataBaseVulnerabilities : Migration
+    public partial class DataBaseVulnerabilities : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
