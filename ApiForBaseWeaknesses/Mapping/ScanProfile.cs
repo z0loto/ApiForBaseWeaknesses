@@ -1,7 +1,6 @@
 using ApiForBaseWeaknesses.Dtos.ScanResultDto;
 using ApiForBaseWeaknesses.Models;
 using AutoMapper;
-using AutoMapper.QueryableExtensions;
 
 namespace ApiForBaseWeaknesses.Mapping;
 

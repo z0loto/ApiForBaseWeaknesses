@@ -1,5 +1,7 @@
+using ApiForBaseWeaknesses.Dtos.ScanDto.ScanRequestDto;
 using ApiForBaseWeaknesses.Dtos.ScanResultDto;
 using ApiForBaseWeaknesses.Models;
+using ApiForBaseWeaknesses.Services;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Mvc;
@@ -9,22 +11,13 @@ namespace ApiForBaseWeaknesses.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class ScansController : ControllerBase
+public class ScansController(AppDbContext context, IMapper mapper, GeneratorVulnerabilitiesService generator)
+    : ControllerBase
 {
-    private readonly AppDbContext _context;
-    private readonly IMapper _mapper;
-
-    public ScansController(AppDbContext context, IMapper mapper)
-    {
-        _context = context;
-        _mapper = mapper;
-    }
-
-    //Сделать через пагинацию и увеличить кол-во передаваемых атрибутов
     [HttpGet]
     public async Task<ActionResult> GetAll()
     {
-        var scans = await _context.Scans.Select(s => new
+        var scans = await context.Scans.Select(s => new
         {
             s.Id,
             s.HostId,
@@ -42,68 +35,42 @@ public class ScansController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult> GetOne(int id)
     {
-        var scan = await _context.Scans.FirstOrDefaultAsync(s => s.Id == id);
+        var scan = await context.Scans.FirstOrDefaultAsync(s => s.Id == id);
         if (scan == null)
         {
             return NotFound();
         }
 
-        var scanResponseDto = await _context.Scans
+        var scanResponseDto = await context.Scans
             .Where(s => s.Id == id)
-            .ProjectTo<ScanResposnsetDto>(_mapper.ConfigurationProvider)
+            .ProjectTo<ScanResposnsetDto>(mapper.ConfigurationProvider)
             .FirstOrDefaultAsync();
 
         return Ok(scanResponseDto);
     }
 
-    [HttpPost("scans")]
-    public async Task<ActionResult> Scans(List<int> hostIndexes)
+    [HttpPost("start-scan")]
+    public async Task<ActionResult> Scans(List<HostRequestDto> hostIndexes)
     {
-        var hosts = await _context.Hosts.Where(h => hostIndexes.Contains(h.Id)).ToListAsync();
+        var hosts = await context.Hosts.Where(h => hostIndexes.Select(hI => hI.Id).Contains(h.Id)).ToListAsync();
         if (hosts.Count == 0)
         {
             return BadRequest();
         }
 
-        var usedIndexes = new HashSet<int>();
-        var maxValue = await _context.Vulnerabilities.CountAsync();
-        if (maxValue == 0)
+        if (await context.Vulnerabilities.CountAsync() == 0)
         {
             return Ok("Угроз не обнаружено");
         }
 
-        var minIndex = await _context.Vulnerabilities.MinAsync(v => v.Id);
-        var maxIndex = await _context.Vulnerabilities.MaxAsync(v => v.Id);
-        var random = new Random();
         var hostVulnerabilities = new Dictionary<int, int>();
 
         foreach (var host in hosts)
         {
-            var numberVulnerabilities = random.Next(maxValue);
-            while (usedIndexes.Count < numberVulnerabilities)
-            {
-                usedIndexes.Add(random.Next(minIndex, maxIndex));
-            }
-
-            var validIndexes = await _context.Vulnerabilities
-                .Where(v => usedIndexes.Contains(v.Id)).Select(v => v.Id).ToListAsync();
-            var scan = new Scan
-            {
-                ScannedAt = DateTime.UtcNow.Date,
-                HostId = host.Id
-            };
-            await _context.Scans.AddAsync(scan);
-            await _context.SaveChangesAsync();
-
-            var scanVulnerabilities = validIndexes.Select(index => new ScanVulnerability
-            {
-                ScanId = scan.Id,
-                VulnerabilityId = index
-            }).ToList();
-            await _context.ScanVulnerabilities.AddRangeAsync(scanVulnerabilities);
-            await _context.SaveChangesAsync();
-
-            hostVulnerabilities.Add(host.Id, scanVulnerabilities.Count);
+            var scan = await generator.Generate(host);
+            await context.Scans.AddAsync(scan);
+            await context.SaveChangesAsync();
+            hostVulnerabilities.Add(host.Id, scan.ScanVulnerability.Select(sv=>sv.Vulnerability).ToList().Count);
         }
 
         var report = "Обнаружено уязвимостей:\n" + string.Join("\n", hostVulnerabilities

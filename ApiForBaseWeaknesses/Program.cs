@@ -4,7 +4,6 @@ using ApiForBaseWeaknesses.Models;
 using ApiForBaseWeaknesses.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using AutoMapper;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,9 +18,10 @@ builder.Services.AddControllers()
     });
 builder.Services.AddAutoMapper(typeof(ScanProfile));
 
-builder.Services.AddScoped<Service>();
+builder.Services.AddScoped<ConvertToEntityService>();
+builder.Services.AddScoped<GeneratorVulnerabilitiesService>();
 builder.Services.AddHttpClient<Vulnerability>();
-// В Program.cs
+
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 

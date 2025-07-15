@@ -7,7 +7,7 @@ namespace ApiForBaseWeaknesses.Mapping;
 
 public class ImportMapper
 {
-    public static List<Vulnerability> MapToListVulnerability(MainVulnerabilitiesDto vulnerabilitiesDto)
+    public static List<Vulnerability> MapToListVulnerability(MainVulnerabilitiesDto? vulnerabilitiesDto)
     {
         return vulnerabilitiesDto.Vulnerabilities
             .Where(v => v.Cve != null)
