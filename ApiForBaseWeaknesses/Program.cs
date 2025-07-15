@@ -1,8 +1,10 @@
 using ApiForBaseWeaknesses;
+using ApiForBaseWeaknesses.Mapping;
 using ApiForBaseWeaknesses.Models;
 using ApiForBaseWeaknesses.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using AutoMapper;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,9 +17,10 @@ builder.Services.AddControllers()
         opt.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
         opt.JsonSerializerOptions.WriteIndented = true;
     });
+builder.Services.AddAutoMapper(typeof(ScanProfile));
+
 builder.Services.AddScoped<Service>();
 builder.Services.AddHttpClient<Vulnerability>();
-
 // В Program.cs
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));

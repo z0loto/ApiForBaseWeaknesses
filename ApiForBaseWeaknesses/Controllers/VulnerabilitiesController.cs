@@ -44,13 +44,14 @@ namespace ApiForBaseWeaknesses.Controllers
                     JsonSerializer.Deserialize<MainVulnerabilitiesDto>(json, options);
                 if (mainVulnerabilitiesDto != null)
                 {
-                    List<Vulnerability> finalmodel = Mapping.Mapping.MapToListVulnerability(mainVulnerabilitiesDto);
+                    List<Vulnerability> finalmodel = Mapping.ImportMapper
+                        .MapToListVulnerability(mainVulnerabilitiesDto);
                     await _context.Vulnerabilities.AddRangeAsync(finalmodel);
                     await _context.SaveChangesAsync();
                     return Ok($"Добавлено уязвимостей: {finalmodel.Count()}");
                 }
 
-                return BadRequest();
+                return Ok("Новых уязвимостей не добавлено");
             }
             catch (Exception ex)
             {

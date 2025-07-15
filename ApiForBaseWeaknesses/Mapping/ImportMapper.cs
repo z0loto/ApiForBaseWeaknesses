@@ -5,7 +5,7 @@ using Host = ApiForBaseWeaknesses.Models.Host;
 
 namespace ApiForBaseWeaknesses.Mapping;
 
-public class Mapping
+public class ImportMapper
 {
     public static List<Vulnerability> MapToListVulnerability(MainVulnerabilitiesDto vulnerabilitiesDto)
     {
@@ -15,7 +15,7 @@ public class Mapping
             .ToList();
     }
 
-    private static Vulnerability MapToVulnerability(CveDto dto)
+    private static Vulnerability MapToVulnerability(CveDto? dto)
     {
         if (dto == null) return null;
 
@@ -34,7 +34,7 @@ public class Mapping
         };
     }
 
-    private static List<CvssMetric> MapToCvssMetric(MetricsDto dto)
+    private static List<CvssMetric> MapToCvssMetric(MetricsDto? dto)
     {
         if (dto == null) return null;
         List<CvssMetric> result = new();
@@ -71,4 +71,6 @@ public class Mapping
             Ip = l
         }).ToList();
     }
+
+
 }
