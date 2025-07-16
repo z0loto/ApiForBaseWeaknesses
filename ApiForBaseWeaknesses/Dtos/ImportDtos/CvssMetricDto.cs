@@ -1,6 +1,6 @@
-namespace ApiForBaseWeaknesses.Dto;
+namespace ApiForBaseWeaknesses.Dtos.ImportDtos;
 
 public class CvssMetricDto
 {
-    public cvssDataDto CvssData { get; set; } = new();
+    public CvssDataDto CvssData { get; set; } = new();
 }

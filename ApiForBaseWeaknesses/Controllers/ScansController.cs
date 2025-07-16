@@ -1,6 +1,5 @@
 using ApiForBaseWeaknesses.Dtos.ScanDto.ScanRequestDto;
-using ApiForBaseWeaknesses.Dtos.ScanResultDto;
-using ApiForBaseWeaknesses.Models;
+using ApiForBaseWeaknesses.Dtos.ScanDtos.ScanResponseDtos;
 using ApiForBaseWeaknesses.Services;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -14,22 +13,24 @@ namespace ApiForBaseWeaknesses.Controllers;
 public class ScansController(AppDbContext context, IMapper mapper, GeneratorVulnerabilitiesService generator)
     : ControllerBase
 {
-    [HttpGet]
-    public async Task<ActionResult> GetAll()
+    [HttpGet("date-range")]
+    public async Task<ActionResult> GetByDateRange([FromQuery] DateTime startDate, [FromQuery] DateTime endDate,
+        int page)
     {
-        var scans = await context.Scans.Select(s => new
+        if (startDate > endDate)
         {
-            s.Id,
-            s.HostId,
-            s.ScannedAt,
-            VulnerabilitiesCount = s.ScanVulnerability.Count
-        }).ToListAsync();
-        if (scans.Count == 0)
-        {
-            return Ok(new List<Scan>());
+            return BadRequest();
         }
 
-        return Ok(scans);
+        const int pageSize = 2;
+        var validScans = context.Scans.Where(s => s.ScannedAt >= startDate &&
+                                                  s.ScannedAt <= endDate)
+            .OrderBy(s => s.ScannedAt);
+        var scans = validScans.Skip((page - 1)).Take(pageSize);
+        var scanDtos = await scans.ProjectTo<ScanResposnseDto>(mapper.ConfigurationProvider)
+            .ToListAsync();
+
+        return Ok(scanDtos);
     }
 
     [HttpGet("{id}")]
@@ -43,22 +44,24 @@ public class ScansController(AppDbContext context, IMapper mapper, GeneratorVuln
 
         var scanResponseDto = await context.Scans
             .Where(s => s.Id == id)
-            .ProjectTo<ScanResposnsetDto>(mapper.ConfigurationProvider)
+            .ProjectTo<ScanResposnseDto>(mapper.ConfigurationProvider)
             .FirstOrDefaultAsync();
 
         return Ok(scanResponseDto);
     }
 
-    [HttpPost("start-scan")]
+    [HttpPost("host-scanning")]
     public async Task<ActionResult> Scans(List<HostRequestDto> hostIndexes)
     {
-        var hosts = await context.Hosts.Where(h => hostIndexes.Select(hI => hI.Id).Contains(h.Id)).ToListAsync();
+        var hosts = await context.Hosts.Where(h => hostIndexes.Select(hI => hI.Id)
+            .Contains(h.Id)).ToListAsync();
         if (hosts.Count == 0)
         {
             return BadRequest();
         }
 
-        if (await context.Vulnerabilities.CountAsync() == 0)
+        var maxVulnerabilities = await context.Vulnerabilities.CountAsync();
+        if (maxVulnerabilities == 0)
         {
             return Ok("Угроз не обнаружено");
         }
@@ -67,10 +70,10 @@ public class ScansController(AppDbContext context, IMapper mapper, GeneratorVuln
 
         foreach (var host in hosts)
         {
-            var scan = await generator.Generate(host);
+            var scan = await generator.Generate(host, maxVulnerabilities);
             await context.Scans.AddAsync(scan);
             await context.SaveChangesAsync();
-            hostVulnerabilities.Add(host.Id, scan.ScanVulnerability.Select(sv=>sv.Vulnerability).ToList().Count);
+            hostVulnerabilities.Add(host.Id, scan.ScanVulnerability.Select(sv => sv.Vulnerability).ToList().Count);
         }
 
         var report = "Обнаружено уязвимостей:\n" + string.Join("\n", hostVulnerabilities

@@ -1,4 +1,4 @@
-namespace ApiForBaseWeaknesses.Dto;
+namespace ApiForBaseWeaknesses.Dtos.ImportDtos;
 
 public class CveDto
 {

@@ -7,7 +7,7 @@ public class ConvertToEntityService
 
     public async Task<List<Host>> ConvertToEntity(IFormFile? file)
     {
-        List<string> hosts = new();
+        var hosts = new List<string>();
         if (file != null)
         {
             using var reader = new StreamReader(file.OpenReadStream());
@@ -21,7 +21,7 @@ public class ConvertToEntityService
             }
         }
 
-        List<Host> result = Mapping.ImportMapper.MapToHost(hosts);
+        var result = Mapping.ImportMapper.MapToHost(hosts);
         return result;
     }
 }

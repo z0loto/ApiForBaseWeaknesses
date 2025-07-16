@@ -1,6 +1,6 @@
 using System.Net;
 using ApiForBaseWeaknesses.Models;
-using ApiForBaseWeaknesses.Dto;
+using ApiForBaseWeaknesses.Dtos.ImportDtos;
 using Host = ApiForBaseWeaknesses.Models.Host;
 
 namespace ApiForBaseWeaknesses.Mapping;

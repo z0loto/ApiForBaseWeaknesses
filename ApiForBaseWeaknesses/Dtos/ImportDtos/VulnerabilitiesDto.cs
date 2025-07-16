@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace ApiForBaseWeaknesses.Dto
+﻿namespace ApiForBaseWeaknesses.Dtos.ImportDtos
 {
     public class VulnerabilitiesDto
     {

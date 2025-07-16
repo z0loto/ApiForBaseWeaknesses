@@ -1,8 +1,6 @@
-using System.Data;
+namespace ApiForBaseWeaknesses.Dtos.ScanDtos.ScanResponseDtos;
 
-namespace ApiForBaseWeaknesses.Dtos.ScanResultDto;
-
-public class ScanResposnsetDto
+public class ScanResposnseDto
 {
     public int Id { get; set; }
     public DateTime ScannedAt { get; set; }

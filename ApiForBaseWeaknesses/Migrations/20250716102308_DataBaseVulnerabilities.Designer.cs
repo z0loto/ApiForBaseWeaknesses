@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ApiForBaseWeaknesses.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250712193058_DataBaseVulnerabilities")]
+    [Migration("20250716102308_DataBaseVulnerabilities")]
     partial class DataBaseVulnerabilities
     {
         /// <inheritdoc />
@@ -237,7 +237,7 @@ namespace ApiForBaseWeaknesses.Migrations
                         .IsRequired();
 
                     b.HasOne("ApiForBaseWeaknesses.Models.Vulnerability", "Vulnerability")
-                        .WithMany()
+                        .WithMany("ScanVulnerability")
                         .HasForeignKey("VulnerabilityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -262,6 +262,8 @@ namespace ApiForBaseWeaknesses.Migrations
                     b.Navigation("CvssMetrics");
 
                     b.Navigation("References");
+
+                    b.Navigation("ScanVulnerability");
                 });
 #pragma warning restore 612, 618
         }

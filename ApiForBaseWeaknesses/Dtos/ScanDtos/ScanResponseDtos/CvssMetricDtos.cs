@@ -1,4 +1,4 @@
-namespace ApiForBaseWeaknesses.Dtos.ScanResultDto;
+namespace ApiForBaseWeaknesses.Dtos.ScanDtos.ScanResponseDtos;
 
 public class CvssMetricDtos
 {

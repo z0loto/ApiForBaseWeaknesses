@@ -4,13 +4,8 @@ using Host = ApiForBaseWeaknesses.Models.Host;
 
 namespace ApiForBaseWeaknesses;
 
-public class AppDbContext : DbContext
+public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {
-    public AppDbContext(DbContextOptions<AppDbContext> options)
-        : base(options)
-    {
-    }
-
     public DbSet<Vulnerability> Vulnerabilities { get; set; }
     public DbSet<Reference> References { get; set; }
     public DbSet<CvssMetric> CvssMetrics { get; set; }
@@ -31,6 +26,7 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<CvssMetric>().Property(c => c.BaseScore).HasColumnName("base_score");
         modelBuilder.Entity<CvssMetric>().Property(c => c.VulnerabilityId).HasColumnName("vulnerability_id");
         modelBuilder.Entity<CvssMetric>().ToTable("cvss_metrics");
+        modelBuilder.Entity<CvssMetric>().HasOne(c => c.Vulnerability).WithMany(v => v.CvssMetrics);
 
         modelBuilder.Entity<Reference>().HasKey(r => r.Id);
         modelBuilder.Entity<Reference>().Property(r => r.Id).HasColumnName("id");
@@ -38,6 +34,7 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Reference>().Property(r => r.Url).HasColumnName("url");
         modelBuilder.Entity<Reference>().Property(r => r.Source).HasColumnName("source");
         modelBuilder.Entity<Reference>().ToTable("references");
+        modelBuilder.Entity<Reference>().HasOne(r => r.Vulnerability).WithMany(v => v.References);
 
         modelBuilder.Entity<Vulnerability>().HasKey(v => v.Id);
         modelBuilder.Entity<Vulnerability>().Property(v => v.Id).HasColumnName("id");
@@ -58,12 +55,15 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Host>().Property(h => h.Description).HasColumnName("description");
         modelBuilder.Entity<Host>().Property(h => h.CreatedAt).HasColumnName("created_at");
         modelBuilder.Entity<Host>().ToTable("hosts");
+        modelBuilder.Entity<Host>().HasMany(h => h.Scans).WithOne(s => s.Host);
         
         modelBuilder.Entity<Scan>().HasKey(s => s.Id);
         modelBuilder.Entity<Scan>().Property(s => s.Id).HasColumnName("id");
         modelBuilder.Entity<Scan>().Property(s => s.HostId).HasColumnName("host_id");
         modelBuilder.Entity<Scan>().Property(s => s.ScannedAt).HasColumnName("scanned_at");
         modelBuilder.Entity<Scan>().ToTable("scans");
+        modelBuilder.Entity<Scan>().HasOne(s => s.Host).WithMany(h => h.Scans);
+        modelBuilder.Entity<Scan>().HasMany(s => s.ScanVulnerability).WithOne(sv => sv.Scan);
         
         modelBuilder.Entity<ScanVulnerability>().HasKey(sv => new { sv.ScanId, sv.VulnerabilityId });
         modelBuilder.Entity<ScanVulnerability>().Property(sv => sv.ScanId).HasColumnName("scan_id");

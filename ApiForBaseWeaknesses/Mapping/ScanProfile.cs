@@ -1,6 +1,8 @@
-using ApiForBaseWeaknesses.Dtos.ScanResultDto;
+using ApiForBaseWeaknesses.Dtos.ScanDto.ScanRequestDto;
+using ApiForBaseWeaknesses.Dtos.ScanDtos.ScanResponseDtos;
 using ApiForBaseWeaknesses.Models;
 using AutoMapper;
+using Host = ApiForBaseWeaknesses.Models.Host;
 
 namespace ApiForBaseWeaknesses.Mapping;
 
@@ -9,7 +11,7 @@ public class ScanProfile : Profile
    
     public ScanProfile()
     {
-        CreateMap<Scan, ScanResposnsetDto>()
+        CreateMap<Scan, ScanResposnseDto>()
             .ForMember(srd => srd.Vulnerabilities,
                 opt => opt
                     .MapFrom(s => s.ScanVulnerability.Select(sv => sv.Vulnerability)));
@@ -17,5 +19,6 @@ public class ScanProfile : Profile
         CreateMap<Vulnerability, VulnerabilitiesDto>();
         CreateMap<CvssMetric, CvssMetricDtos>();
         CreateMap<Reference, ReferenceDtos>();
+        CreateMap<Host, HostRequestDto>();
     }
 }

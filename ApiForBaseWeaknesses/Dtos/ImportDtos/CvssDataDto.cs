@@ -1,6 +1,6 @@
-namespace ApiForBaseWeaknesses.Dto;
+namespace ApiForBaseWeaknesses.Dtos.ImportDtos;
 
-public class cvssDataDto
+public class CvssDataDto
 {
     public string Version { get; set; } = string.Empty;
     public string VectorString { get; set; } = string.Empty;

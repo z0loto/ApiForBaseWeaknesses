@@ -4,22 +4,30 @@ using Host = ApiForBaseWeaknesses.Models.Host;
 
 namespace ApiForBaseWeaknesses.Services;
 
-public class GeneratorVulnerabilitiesService(AppDbContext context, ILogger<GeneratorVulnerabilitiesService> logger)
+public class GeneratorVulnerabilitiesService(AppDbContext context)
 {
-    private readonly ILogger<GeneratorVulnerabilitiesService> _logger = logger;
 
-    public async Task<Scan> Generate(Host host)
+    public async Task<Scan> Generate(Host host,int maxVulnerabilities)
     {
         var random = new Random();
+        var randomVulnerabilityIds = new List<int>();
+        
+        var amountDetectedVulnerabilities = random.Next(maxVulnerabilities);
         var allVulnerabilityIds = await context.Vulnerabilities.Select(v => v.Id).ToListAsync();
-        var shuffledIds = allVulnerabilityIds.OrderBy(x => random.Next()).ToList();
+        var shuffledVulnerabilityIds = allVulnerabilityIds.OrderBy(_ => random.Next()).ToList();
+        
+        for (var i=0;i <= amountDetectedVulnerabilities-1;i++)
+        {
+            randomVulnerabilityIds.Add(shuffledVulnerabilityIds[i]);
+        }
+        
         var scan = new Scan
         {
             ScannedAt = DateTime.UtcNow.Date,
             HostId = host.Id
         };
 
-        scan.ScanVulnerability = shuffledIds.Select(index => new ScanVulnerability
+        scan.ScanVulnerability = randomVulnerabilityIds.Select(index => new ScanVulnerability
         {
             VulnerabilityId = index,
             Scan = scan

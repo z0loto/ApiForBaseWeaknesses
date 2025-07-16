@@ -1,15 +1,12 @@
 using System.Text.Json;
-using ApiForBaseWeaknesses.Dto;
+using ApiForBaseWeaknesses.Dtos.ImportDtos;
 using Microsoft.AspNetCore.Mvc;
-using ApiForBaseWeaknesses.Models;
 
 namespace ApiForBaseWeaknesses.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class VulnerabilitiesController(
-        ILogger<VulnerabilitiesController> logger,
-        AppDbContext context)
+    public class VulnerabilitiesController(ILogger<VulnerabilitiesController> logger, AppDbContext context)
         : ControllerBase
     {
         [HttpPost("import")]
@@ -33,18 +30,19 @@ namespace ApiForBaseWeaknesses.Controllers
                 {
                     PropertyNameCaseInsensitive = true
                 };
-                MainVulnerabilitiesDto? mainVulnerabilitiesDto =
+                var mainVulnerabilitiesDto =
                     JsonSerializer.Deserialize<MainVulnerabilitiesDto>(json, options);
-                if (mainVulnerabilitiesDto != null)
+                if (mainVulnerabilitiesDto == null)
                 {
-                    List<Vulnerability> vulnerabilities = Mapping.ImportMapper
-                        .MapToListVulnerability(mainVulnerabilitiesDto);
-                    await context.Vulnerabilities.AddRangeAsync(vulnerabilities);
-                    await context.SaveChangesAsync();
-                    return Ok($"Добавлено уязвимостей: {vulnerabilities.Count}");
+                    return Ok("Новых уязвимостей не добавлено");
                 }
 
-                return Ok("Новых уязвимостей не добавлено");
+                var vulnerabilities = Mapping.ImportMapper
+                    .MapToListVulnerability(mainVulnerabilitiesDto);
+                await context.Vulnerabilities.AddRangeAsync(vulnerabilities);
+                await context.SaveChangesAsync();
+                return Ok($"Добавлено уязвимостей: {vulnerabilities.Count}");
+                
             }
             catch (Exception ex)
             {
