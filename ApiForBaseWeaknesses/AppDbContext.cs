@@ -63,7 +63,6 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         modelBuilder.Entity<Scan>().Property(s => s.ScannedAt).HasColumnName("scanned_at");
         modelBuilder.Entity<Scan>().ToTable("scans");
         modelBuilder.Entity<Scan>().HasOne(s => s.Host).WithMany(h => h.Scans);
-        modelBuilder.Entity<Scan>().HasMany(s => s.ScanVulnerability).WithOne(sv => sv.Scan);
         
         modelBuilder.Entity<ScanVulnerability>().HasKey(sv => new { sv.ScanId, sv.VulnerabilityId });
         modelBuilder.Entity<ScanVulnerability>().Property(sv => sv.ScanId).HasColumnName("scan_id");
@@ -71,5 +70,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         modelBuilder.Entity<ScanVulnerability>().ToTable("scan_vulnerability");
         modelBuilder.Entity<ScanVulnerability>().HasOne(sv => sv.Scan).WithMany(s => s.ScanVulnerability)
             .HasForeignKey(sv => sv.ScanId);
+        modelBuilder.Entity<ScanVulnerability>().HasOne(sv => sv.Vulnerability)
+            .WithMany(v => v.ScanVulnerability);
     }
 }

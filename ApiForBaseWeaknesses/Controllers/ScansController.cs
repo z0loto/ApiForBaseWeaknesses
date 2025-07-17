@@ -14,7 +14,7 @@ public class ScansController(AppDbContext context, IMapper mapper, GeneratorVuln
     : ControllerBase
 {
     [HttpGet("date-range")]
-    public async Task<ActionResult> GetByDateRange([FromQuery] DateTime startDate, [FromQuery] DateTime endDate,
+    public async Task<ActionResult> GetScans([FromQuery] DateTime startDate, [FromQuery] DateTime endDate,
         int page)
     {
         if (startDate > endDate)
@@ -23,8 +23,8 @@ public class ScansController(AppDbContext context, IMapper mapper, GeneratorVuln
         }
 
         const int pageSize = 2;
-        var validScans = context.Scans.Where(s => s.ScannedAt >= startDate &&
-                                                  s.ScannedAt <= endDate)
+        var validScans = context.Scans
+            .Where(s => s.ScannedAt >= startDate && s.ScannedAt <= endDate)
             .OrderBy(s => s.ScannedAt);
         var scans = validScans.Skip((page - 1)).Take(pageSize);
         var scanDtos = await scans.ProjectTo<ScanResposnseDto>(mapper.ConfigurationProvider)
@@ -50,8 +50,8 @@ public class ScansController(AppDbContext context, IMapper mapper, GeneratorVuln
         return Ok(scanResponseDto);
     }
 
-    [HttpPost("host-scanning")]
-    public async Task<ActionResult> Scans(List<HostRequestDto> hostIndexes)
+    [HttpPost]
+    public async Task<ActionResult> Run(List<HostRequestDto> hostIndexes)
     {
         var hosts = await context.Hosts.Where(h => hostIndexes.Select(hI => hI.Id)
             .Contains(h.Id)).ToListAsync();

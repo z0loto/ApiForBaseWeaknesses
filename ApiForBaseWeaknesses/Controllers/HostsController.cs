@@ -39,10 +39,6 @@ public class HostsController(AppDbContext context, ILogger<HostsController> logg
     public async Task<ActionResult> GetAll()
     {
         var hosts = await context.Hosts.ProjectTo<HostRequestDto>(mapper.ConfigurationProvider).ToListAsync();
-        if (hosts.Count == 0)
-        {
-            return Ok(new List<HostRequestDto>());
-        }
 
         return Ok(hosts);
     }
