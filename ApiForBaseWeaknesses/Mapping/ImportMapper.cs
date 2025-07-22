@@ -1,13 +1,15 @@
 using System.Net;
 using ApiForBaseWeaknesses.Models;
 using ApiForBaseWeaknesses.Dtos.ImportDtos;
+using AutoMapper;
+using CvssMetric = ApiForBaseWeaknesses.Dtos.ImportDtos.CvssMetric;
 using Host = ApiForBaseWeaknesses.Models.Host;
 
 namespace ApiForBaseWeaknesses.Mapping;
 
 public class ImportMapper
 {
-    public static List<Vulnerability> MapToListVulnerability(MainVulnerabilitiesDto? vulnerabilitiesDto)
+    public static List<Vulnerability> MapToListVulnerability(MainVulnerabilities? vulnerabilitiesDto)
     {
         return vulnerabilitiesDto.Vulnerabilities
             .Where(v => v.Cve != null)
@@ -15,7 +17,7 @@ public class ImportMapper
             .ToList();
     }
 
-    private static Vulnerability MapToVulnerability(CveDto? dto)
+    private static Vulnerability MapToVulnerability(Cve? dto)
     {
         if (dto == null) return null;
 
@@ -34,12 +36,12 @@ public class ImportMapper
         };
     }
 
-    private static List<CvssMetric> MapToCvssMetric(MetricsDto? dto)
+    private static List<Models.CvssMetric> MapToCvssMetric(Metrics? dto)
     {
         if (dto == null) return null;
-        List<CvssMetric> result = new();
+        List<Models.CvssMetric> result = new();
 
-        void Add(ICollection<CvssMetricDto> list)
+        void Add(ICollection<CvssMetric> list)
         {
             if (list.Count == 0)
             {
@@ -48,7 +50,7 @@ public class ImportMapper
 
             foreach (var cvss in list)
             {
-                result.Add(new CvssMetric
+                result.Add(new Models.CvssMetric
                 {
                     Vector = cvss.CvssData.VectorString,
                     Version = cvss.CvssData.Version,
@@ -71,6 +73,5 @@ public class ImportMapper
             Ip = l
         }).ToList();
     }
-
-
+    
 }

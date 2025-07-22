@@ -19,8 +19,9 @@ builder.Services.AddControllers()
 builder.Services.AddAutoMapper(typeof(ScanProfile));
 
 builder.Services.AddScoped<ConvertToEntityService>();
-builder.Services.AddScoped<GeneratorVulnerabilitiesService>();
+builder.Services.AddScoped<ScanService>();
 builder.Services.AddHttpClient<Vulnerability>();
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));

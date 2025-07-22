@@ -6,9 +6,16 @@ namespace ApiForBaseWeaknesses.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class VulnerabilitiesController(ILogger<VulnerabilitiesController> logger, AppDbContext context)
+    public class VulnerabilitiesController
         : ControllerBase
     {
+        private readonly ILogger<VulnerabilitiesController> _logger;
+        private readonly AppDbContext _context;
+        public VulnerabilitiesController(ILogger<VulnerabilitiesController> logger, AppDbContext context)
+        {
+            _logger = logger;
+            _context = context;
+        }
         [HttpPost("import")]
         public async Task<IActionResult> Import(IFormFile? file)
         {
@@ -16,7 +23,7 @@ namespace ApiForBaseWeaknesses.Controllers
             {
                 if (file == null || file.Length == 0)
                 {
-                    logger.LogDebug("Файл отсутствует или пуст");
+                    _logger.LogDebug("Файл отсутствует или пуст");
                     return BadRequest("Файл отсутствует или пуст");
                 }
 
@@ -31,7 +38,7 @@ namespace ApiForBaseWeaknesses.Controllers
                     PropertyNameCaseInsensitive = true
                 };
                 var mainVulnerabilitiesDto =
-                    JsonSerializer.Deserialize<MainVulnerabilitiesDto>(json, options);
+                    JsonSerializer.Deserialize<MainVulnerabilities>(json, options);
                 if (mainVulnerabilitiesDto == null)
                 {
                     return Ok("Новых уязвимостей не добавлено");
@@ -39,14 +46,14 @@ namespace ApiForBaseWeaknesses.Controllers
 
                 var vulnerabilities = Mapping.ImportMapper
                     .MapToListVulnerability(mainVulnerabilitiesDto);
-                await context.Vulnerabilities.AddRangeAsync(vulnerabilities);
-                await context.SaveChangesAsync();
+                await _context.Vulnerabilities.AddRangeAsync(vulnerabilities);
+                await _context.SaveChangesAsync();
                 return Ok($"Добавлено уязвимостей: {vulnerabilities.Count}");
                 
             }
             catch (Exception ex)
             {
-                logger.LogDebug("Непредвиденная ошибка");
+                _logger.LogDebug("Непредвиденная ошибка");
                 return BadRequest("Непредвиденная ошибка");
             }
         }

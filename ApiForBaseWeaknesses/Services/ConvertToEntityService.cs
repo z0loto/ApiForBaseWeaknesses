@@ -5,12 +5,12 @@ namespace ApiForBaseWeaknesses.Services;
 public class ConvertToEntityService
 {
 
-    public async Task<List<Host>> ConvertToEntity(IFormFile? file)
+    public async Task<List<Host>> ConvertToHost(Stream file)
     {
         var hosts = new List<string>();
         if (file != null)
         {
-            using var reader = new StreamReader(file.OpenReadStream());
+            using var reader = new StreamReader(file);
             while (!reader.EndOfStream)
             {
                 var line = await reader.ReadLineAsync();

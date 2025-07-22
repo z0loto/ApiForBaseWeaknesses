@@ -23,7 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Dtos\ScanDtos\ScanRequestDtos\" />
     <Folder Include="Import\" />
   </ItemGroup>
 

@@ -26,7 +26,6 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         modelBuilder.Entity<CvssMetric>().Property(c => c.BaseScore).HasColumnName("base_score");
         modelBuilder.Entity<CvssMetric>().Property(c => c.VulnerabilityId).HasColumnName("vulnerability_id");
         modelBuilder.Entity<CvssMetric>().ToTable("cvss_metrics");
-        modelBuilder.Entity<CvssMetric>().HasOne(c => c.Vulnerability).WithMany(v => v.CvssMetrics);
 
         modelBuilder.Entity<Reference>().HasKey(r => r.Id);
         modelBuilder.Entity<Reference>().Property(r => r.Id).HasColumnName("id");
@@ -34,7 +33,6 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         modelBuilder.Entity<Reference>().Property(r => r.Url).HasColumnName("url");
         modelBuilder.Entity<Reference>().Property(r => r.Source).HasColumnName("source");
         modelBuilder.Entity<Reference>().ToTable("references");
-        modelBuilder.Entity<Reference>().HasOne(r => r.Vulnerability).WithMany(v => v.References);
 
         modelBuilder.Entity<Vulnerability>().HasKey(v => v.Id);
         modelBuilder.Entity<Vulnerability>().Property(v => v.Id).HasColumnName("id");
@@ -62,7 +60,6 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         modelBuilder.Entity<Scan>().Property(s => s.HostId).HasColumnName("host_id");
         modelBuilder.Entity<Scan>().Property(s => s.ScannedAt).HasColumnName("scanned_at");
         modelBuilder.Entity<Scan>().ToTable("scans");
-        modelBuilder.Entity<Scan>().HasOne(s => s.Host).WithMany(h => h.Scans);
         
         modelBuilder.Entity<ScanVulnerability>().HasKey(sv => new { sv.ScanId, sv.VulnerabilityId });
         modelBuilder.Entity<ScanVulnerability>().Property(sv => sv.ScanId).HasColumnName("scan_id");
