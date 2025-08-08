@@ -118,7 +118,7 @@ namespace ApiForBaseWeaknesses.Migrations
                     b.ToTable("references", (string)null);
                 });
 
-            modelBuilder.Entity("ApiForBaseWeaknesses.Models.Scan", b =>
+            modelBuilder.Entity("ApiForBaseWeaknesses.Models.ForScans", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -159,7 +159,7 @@ namespace ApiForBaseWeaknesses.Migrations
                     b.ToTable("scan_vulnerability", (string)null);
                 });
 
-            modelBuilder.Entity("ApiForBaseWeaknesses.Models.Vulnerability", b =>
+            modelBuilder.Entity("ApiForBaseWeaknesses.Models.Vulnerabilities", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -194,27 +194,27 @@ namespace ApiForBaseWeaknesses.Migrations
 
             modelBuilder.Entity("ApiForBaseWeaknesses.Models.CvssMetric", b =>
                 {
-                    b.HasOne("ApiForBaseWeaknesses.Models.Vulnerability", "Vulnerability")
+                    b.HasOne("ApiForBaseWeaknesses.Models.Vulnerabilities", "Vulnerabilities")
                         .WithMany("CvssMetrics")
                         .HasForeignKey("VulnerabilityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Vulnerability");
+                    b.Navigation("Vulnerabilities");
                 });
 
             modelBuilder.Entity("ApiForBaseWeaknesses.Models.Reference", b =>
                 {
-                    b.HasOne("ApiForBaseWeaknesses.Models.Vulnerability", "Vulnerability")
+                    b.HasOne("ApiForBaseWeaknesses.Models.Vulnerabilities", "Vulnerabilities")
                         .WithMany("References")
                         .HasForeignKey("VulnerabilityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Vulnerability");
+                    b.Navigation("Vulnerabilities");
                 });
 
-            modelBuilder.Entity("ApiForBaseWeaknesses.Models.Scan", b =>
+            modelBuilder.Entity("ApiForBaseWeaknesses.Models.ForScans", b =>
                 {
                     b.HasOne("ApiForBaseWeaknesses.Models.Host", "Host")
                         .WithMany("Scans")
@@ -227,21 +227,21 @@ namespace ApiForBaseWeaknesses.Migrations
 
             modelBuilder.Entity("ApiForBaseWeaknesses.Models.ScanVulnerability", b =>
                 {
-                    b.HasOne("ApiForBaseWeaknesses.Models.Scan", "Scan")
+                    b.HasOne("ApiForBaseWeaknesses.Models.ForScans", "ForScans")
                         .WithMany("ScanVulnerability")
                         .HasForeignKey("ScanId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ApiForBaseWeaknesses.Models.Vulnerability", "Vulnerability")
+                    b.HasOne("ApiForBaseWeaknesses.Models.Vulnerabilities", "Vulnerabilities")
                         .WithMany("ScanVulnerability")
                         .HasForeignKey("VulnerabilityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Scan");
+                    b.Navigation("ForScans");
 
-                    b.Navigation("Vulnerability");
+                    b.Navigation("Vulnerabilities");
                 });
 
             modelBuilder.Entity("ApiForBaseWeaknesses.Models.Host", b =>
@@ -249,12 +249,12 @@ namespace ApiForBaseWeaknesses.Migrations
                     b.Navigation("Scans");
                 });
 
-            modelBuilder.Entity("ApiForBaseWeaknesses.Models.Scan", b =>
+            modelBuilder.Entity("ApiForBaseWeaknesses.Models.ForScans", b =>
                 {
                     b.Navigation("ScanVulnerability");
                 });
 
-            modelBuilder.Entity("ApiForBaseWeaknesses.Models.Vulnerability", b =>
+            modelBuilder.Entity("ApiForBaseWeaknesses.Models.Vulnerabilities", b =>
                 {
                     b.Navigation("CvssMetrics");
 

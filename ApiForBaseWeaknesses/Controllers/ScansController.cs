@@ -1,14 +1,12 @@
-using ApiForBaseWeaknesses.Dtos.HostDtos.ScanRequestDto;
-using ApiForBaseWeaknesses.Dtos.ScanDtos.Requests;
 using ApiForBaseWeaknesses.Dtos.ScanDtos.ScanResponseDtos;
 using ApiForBaseWeaknesses.Models;
+using ApiForBaseWeaknesses.Requests;
 using ApiForBaseWeaknesses.Services;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Request = ApiForBaseWeaknesses.Dtos.HostDtos.ScanRequestDto.Request;
-using Scan = ApiForBaseWeaknesses.Dtos.ScanDtos.ScanResponseDtos.Scan;
+using Scan = ApiForBaseWeaknesses.Responses.ForScans.Scan;
 
 namespace ApiForBaseWeaknesses.Controllers;
 
@@ -29,42 +27,43 @@ public class ScansController
     }
 
     [HttpGet]
-    public async Task<ActionResult> GetScans([FromQuery] Dtos.ScanDtos.Requests.Request request)
+    public async Task<ActionResult> GetScans([FromQuery] Requests.Scan scan)
     {
         IQueryable<Models.Scan> validScans;
-        if (request.StartDate > request.EndDate)
+        if (scan.StartDate > scan.EndDate)
         {
             return BadRequest();
         }
 
-        if (request.StartDate != null && request.EndDate != null)
+        if (scan.StartDate != null && scan.EndDate != null)
         {
             validScans = _context.Scans
-                .Where(s => s.ScannedAt >= request.StartDate && s.ScannedAt <= request.EndDate)
+                .Where(s => s.ScannedAt >= scan.StartDate && s.ScannedAt <= scan.EndDate)
                 .OrderBy(s => s.ScannedAt);
         }
         else
         {
             validScans = _context.Scans
                 .Where(s =>
-                    (!request.StartDate.HasValue || s.ScannedAt >= request.StartDate.Value) &&
-                    (!request.EndDate.HasValue || s.ScannedAt <= request.EndDate.Value)
+                    (!scan.StartDate.HasValue || s.ScannedAt >= scan.StartDate.Value) &&
+                    (!scan.EndDate.HasValue || s.ScannedAt <= scan.EndDate.Value)
                 )
                 .OrderBy(s => s.ScannedAt);
         }
-        validScans = request.SortMode switch
+
+        var orderScans = scan.SortMode switch
         {
-            SortMode.Date when !request.SortDescending => validScans.OrderBy(i => i.ScannedAt),
-            SortMode.Date when request.SortDescending => validScans.OrderByDescending(i => i.ScannedAt),
-
-            SortMode.Id when !request.SortDescending => validScans.OrderBy(i => i.Id),
-            SortMode.Id when request.SortDescending => validScans.OrderByDescending(i => i.Id),
-
-            _ => validScans
+            "Id" => scan.SortDescending ? validScans.OrderByDescending(i => i.Id) : validScans.OrderBy(i=>i.Id),
+            "Date" => scan.SortDescending ? validScans.OrderByDescending(i=>i.ScannedAt) : validScans.OrderBy(i=>i.ScannedAt),
+            _ => null
         };
-
-        var scans = validScans
-            .Skip((request.Page - 1) * request.PageSize).Take(request.PageSize);
+        if (orderScans == null)
+        {
+            return BadRequest();
+        }
+        
+        var scans = orderScans
+            .Skip((scan.Page - 1) * scan.PageSize).Take(scan.PageSize);
         var scanDtos = await scans.ProjectTo<Scan>(_mapper.ConfigurationProvider)
             .ToListAsync();
 
@@ -89,12 +88,12 @@ public class ScansController
     }
 
     [HttpPost]
-    public async Task<ActionResult> Run(Request indexes)
+    public async Task<ActionResult> Run(HostIndexes hostId)
     {
-             var hosts = await _context.Hosts.Where(h => indexes.Indexes.ToList()
+             var hosts = await _context.Hosts.Where(h => hostId.Indexes.ToList()
                 .Contains(h.Id)).ToListAsync();
         
-        if (hosts.Count == 0)
+        if (hosts.Count == 0 || hosts.Count != hostId.Indexes.Count)
         {
             return BadRequest();
         }

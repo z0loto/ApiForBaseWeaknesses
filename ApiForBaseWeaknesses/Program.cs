@@ -38,7 +38,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// Configure the HTTP request pipeline.
+// Configure the HTTP scan pipeline.
 
 app.UseHttpsRedirection();
 

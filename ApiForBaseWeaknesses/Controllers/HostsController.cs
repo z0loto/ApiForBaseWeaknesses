@@ -1,4 +1,4 @@
-using ApiForBaseWeaknesses.Dtos.HostDtos.ScanRequestDto;
+using ApiForBaseWeaknesses.Requests;
 using ApiForBaseWeaknesses.Services;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -52,12 +52,12 @@ public class HostsController : ControllerBase
     [HttpGet]
     public async Task<ActionResult> GetAll()
     {
-        var hosts = await _context.Hosts.ProjectTo<Request>(_mapper.ConfigurationProvider)
+        var hosts = await _context.Hosts.ProjectTo<HostIndexes>(_mapper.ConfigurationProvider)
             .ToListAsync();
 
         return Ok(hosts);
     }
-    
+
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(int id)
     {
@@ -65,16 +65,17 @@ public class HostsController : ControllerBase
 
         if (host == null)
             return NotFound();
-
-        return Ok(host);
+        var hostRequest = _mapper.Map<Dtos.Host>(host);
+        return Ok(hostRequest);
     }
     
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] HostDto newHost)
+    public async Task<IActionResult> Create([FromBody] Dtos.Host newHost)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
         var hostEntity = _mapper.Map<Host>(newHost);
+        hostEntity.CreatedAt = DateTime.UtcNow;
         _context.Hosts.Add(hostEntity);
         await _context.SaveChangesAsync();
 
@@ -82,19 +83,18 @@ public class HostsController : ControllerBase
     }
     
     [HttpPut("{id}")]
-    public async Task<IActionResult> Update([FromBody] Host updatedHost)
+    public async Task<IActionResult> Update([FromBody] Dtos.Host updatedHost)
     {
-        var host = await _context.Hosts.FindAsync(updatedHost.Id);
+        var host = await _context.Hosts.FindAsync(updatedHost.Ip);
         if (host == null)
             return NotFound();
 
         host.Ip = updatedHost.Ip;
         host.Description = updatedHost.Description;
-        host.CreatedAt = updatedHost.CreatedAt;
 
         await _context.SaveChangesAsync();
 
-        return NoContent();
+        return Ok(host);
     }
     
     [HttpDelete("{id}")]

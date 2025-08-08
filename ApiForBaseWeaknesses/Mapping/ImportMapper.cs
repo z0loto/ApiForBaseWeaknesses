@@ -1,8 +1,8 @@
 using System.Net;
+using ApiForBaseWeaknesses.Dtos.Import;
 using ApiForBaseWeaknesses.Models;
-using ApiForBaseWeaknesses.Dtos.ImportDtos;
 using AutoMapper;
-using CvssMetric = ApiForBaseWeaknesses.Dtos.ImportDtos.CvssMetric;
+using CvssMetric = ApiForBaseWeaknesses.Dtos.Import.CvssMetric;
 using Host = ApiForBaseWeaknesses.Models.Host;
 
 namespace ApiForBaseWeaknesses.Mapping;

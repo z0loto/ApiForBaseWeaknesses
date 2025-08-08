@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <Folder Include="Import\" />
+    <Folder Include="Responses\" />
   </ItemGroup>
 
 </Project>

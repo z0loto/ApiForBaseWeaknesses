@@ -1,4 +1,5 @@
-using ApiForBaseWeaknesses.Dtos.HostDtos.ScanRequestDto;
+using ApiForBaseWeaknesses.Dtos.Vulnerabilities;
+using ApiForBaseWeaknesses.Requests;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,7 +25,7 @@ public class StatsController : ControllerBase
             }).OrderByDescending(x => x.Count).Take(10)
             .Join(_context.Vulnerabilities,g => g.VulnerabilityId, 
                 v => v.Id,
-                (g, v) => new Dtos.VulnerabilittDto.Top()
+                (g, v) => new Top()
                 {
                     Id = v.Id,
                     Name = v.Name,
@@ -49,7 +50,7 @@ public class StatsController : ControllerBase
                     .FirstOrDefault()
             })
             .Where(x => x.LastScan != null)
-            .Select(x => new Top
+            .Select(x => new TopHosts
             {
                 Id = x.Host.Id,
                 Ip = x.Host.Ip,
@@ -74,7 +75,7 @@ public class StatsController : ControllerBase
             .Where(h => !h.Scans
                 .SelectMany(s => s.ScanVulnerability)
                 .Any())
-            .Select(h => new Top
+            .Select(h => new TopHosts
             {
                 Id=h.Id,
                 Ip=h.Ip,

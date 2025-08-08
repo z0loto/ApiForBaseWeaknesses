@@ -1,5 +1,5 @@
 using System.Text.Json;
-using ApiForBaseWeaknesses.Dtos.ImportDtos;
+using ApiForBaseWeaknesses.Dtos.Import;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ApiForBaseWeaknesses.Controllers
