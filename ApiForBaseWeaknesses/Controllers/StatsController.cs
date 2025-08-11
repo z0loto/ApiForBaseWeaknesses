@@ -14,15 +14,15 @@ public class StatsController : ControllerBase
         _context = context;
     }
     
-    [HttpGet("top-vulnerabilities")]
-    public async Task<IActionResult> GetTopThreats()
+    [HttpGet("top-vulnerabilities/{count}")]
+    public async Task<IActionResult> GetTopThreats([FromRoute]int count)
     {
         var topThreats = await _context.ScanVulnerabilities
             .GroupBy(sv => sv.VulnerabilityId).Select(group => new
             {
                 VulnerabilityId = group.Key,
                 Count = group.Count()
-            }).OrderByDescending(x => x.Count).Take(10)
+            }).OrderByDescending(x => x.Count).Take(count)
             .Join(_context.Vulnerabilities,g => g.VulnerabilityId, 
                 v => v.Id,
                 (g, v) => new Top()
@@ -38,8 +38,8 @@ public class StatsController : ControllerBase
 
         return Ok(topThreats);
     }
-    [HttpGet("top-hosts-by-vulnerabilities")]
-    public async Task<IActionResult> GetTopHostsByVulnerability()
+    [HttpGet("top-hosts/{count}")]
+    public async Task<IActionResult> GetTopHostsByVulnerability(int count)
     {
         var topHosts = await _context.Hosts
             .Select(h => new
@@ -63,12 +63,12 @@ public class StatsController : ControllerBase
             })
             .Where(t => t.VulnerabilityCount > 0)
             .OrderByDescending(t => t.VulnerabilityCount)
-            .Take(5)
+            .Take(count)
             .ToListAsync();
 
         return Ok(topHosts);
     }
-    [HttpGet("hosts-without-vulnerabilities")]
+    [HttpGet("clear-hosts")]
     public async Task<IActionResult> GetHostsWithoutVulnerabilities()
     {
         var hostsWithoutVulns = await _context.Hosts
