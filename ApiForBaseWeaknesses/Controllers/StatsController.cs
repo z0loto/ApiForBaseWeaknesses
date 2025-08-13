@@ -17,7 +17,7 @@ public class StatsController : ControllerBase
     [HttpGet("top-vulnerabilities/{count}")]
     public async Task<IActionResult> GetTopThreats([FromRoute]int count)
     {
-        var topThreats = await _context.ScanVulnerabilities
+        var topVulnerabilities = await _context.ScanVulnerabilities
             .GroupBy(sv => sv.VulnerabilityId).Select(group => new
             {
                 VulnerabilityId = group.Key,
@@ -25,7 +25,7 @@ public class StatsController : ControllerBase
             }).OrderByDescending(x => x.Count).Take(count)
             .Join(_context.Vulnerabilities,g => g.VulnerabilityId, 
                 v => v.Id,
-                (g, v) => new Top()
+                (g, v) => new TopVulnerabilities()
                 {
                     Id = v.Id,
                     Name = v.Name,
@@ -36,7 +36,7 @@ public class StatsController : ControllerBase
                 })
             .ToListAsync();
 
-        return Ok(topThreats);
+        return Ok(topVulnerabilities);
     }
     [HttpGet("top-hosts/{count}")]
     public async Task<IActionResult> GetTopHostsByVulnerability(int count)

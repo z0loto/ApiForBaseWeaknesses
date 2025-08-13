@@ -1,6 +1,6 @@
 namespace ApiForBaseWeaknesses.Dtos.Vulnerabilities;
 
-public class Top
+public class TopVulnerabilities
 {
     public int Id { get; set; }
     public DateTime Published { get; set; } = DateTime.UtcNow;
